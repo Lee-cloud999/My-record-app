@@ -23,7 +23,7 @@
 #bucketAdd1:checked ~ #bucketAdd2{display:block;position:absolute;opacity:0;pointer-events:none}
 
 /* PWA / sync */
-.syncbar{max-width:980px;margin:0 auto 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:0 4px}.sync-pill{display:inline-flex;align-items:center;gap:6px;}.sync-pill:first-child{width:190px;justify-content:flex-start;white-space:nowrap;overflow:hidden}.sync-pill:first-child #syncText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sync-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,253,248,.92);border-radius:999px;padding:7px 11px;font-size:12px;color:#6f6b65}.sync-dot{width:8px;height:8px;border-radius:50%;background:#aaa}.sync-dot.ok{background:#6f9d72}.sync-dot.busy{background:#d0a84c}.sync-dot.off{background:#b36f6f}.sync-spacer{flex:1}.syncbtn,.tinybtn{border:1px solid var(--line);background:var(--paper);border-radius:12px;min-height:36px;padding:0 12px;color:var(--ink);font-weight:800;cursor:pointer}.syncbtn.primary-sync{background:var(--blue);border-color:var(--blue);color:white}#logoutBtn{align-items:center;justify-content:center;text-align:center;line-height:1;}.tinybtn{font-size:12px}.auth-layer{position:fixed;inset:0;z-index:20000;background:rgba(247,243,235,.96);display:none;align-items:center;justify-content:center;padding:22px}.auth-layer.show{display:none!important;pointer-events:none!important}.auth-card{width:min(430px,100%);background:var(--paper);border:1px solid #ece6dc;border-radius:24px;box-shadow:var(--shadow);padding:24px}.auth-card h2{margin:0 0 6px;font-size:25px}.auth-card p{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.6}.auth-card input{height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px;margin:6px 0}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.auth-msg{min-height:20px;font-size:12px;color:#9c5b5b;margin-top:9px}.offline-open{margin-top:8px;width:100%}.archive-controls .chip{cursor:pointer}.archive-controls .chip.active{background:var(--blue);border-color:var(--blue);color:#fff}.archive-search{width:100%;height:40px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:#fff!important;padding:0 12px!important;margin-bottom:12px}.install-hint{font-size:11px;color:var(--muted)}.cloud-user{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.danger-note{font-size:11px;color:#8a7362;margin-left:4px}
+.syncbar{max-width:980px;margin:0 auto 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:0 4px}.sync-pill{display:inline-flex;align-items:center;gap:6px;}.sync-pill:first-child{width:190px;justify-content:flex-start;white-space:nowrap;overflow:hidden}.sync-pill:first-child #syncText{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sync-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,253,248,.92);border-radius:999px;padding:7px 11px;font-size:12px;color:#6f6b65}.sync-dot{width:8px;height:8px;border-radius:50%;background:#aaa}.sync-dot.ok{background:#6f9d72}.sync-dot.busy{background:#d0a84c}.sync-dot.off{background:#b36f6f}.sync-spacer{flex:1}.syncbtn,.tinybtn{border:1px solid var(--line);background:var(--paper);border-radius:12px;min-height:36px;padding:0 12px;color:var(--ink);font-weight:800;cursor:pointer}.syncbtn.primary-sync{background:var(--blue);border-color:var(--blue);color:white}#logoutBtn{align-items:center;justify-content:center;text-align:center;line-height:1;}.tinybtn{font-size:12px}.auth-layer{position:fixed;inset:0;z-index:20000;background:rgba(247,243,235,.96);display:none;align-items:center;justify-content:center;padding:22px}.auth-layer.show{display:flex}.auth-card{width:min(430px,100%);background:var(--paper);border:1px solid #ece6dc;border-radius:24px;box-shadow:var(--shadow);padding:24px}.auth-card h2{margin:0 0 6px;font-size:25px}.auth-card p{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.6}.auth-card input{height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px;margin:6px 0}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.auth-msg{min-height:20px;font-size:12px;color:#9c5b5b;margin-top:9px}.offline-open{margin-top:8px;width:100%}.archive-controls .chip{cursor:pointer}.archive-controls .chip.active{background:var(--blue);border-color:var(--blue);color:#fff}.archive-search{width:100%;height:40px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:#fff!important;padding:0 12px!important;margin-bottom:12px}.install-hint{font-size:11px;color:var(--muted)}.cloud-user{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.danger-note{font-size:11px;color:#8a7362;margin-left:4px}
 @media(max-width:650px){.sync-pill:first-child{width:175px}.syncbar{padding:0}.sync-spacer{display:none}.sync-pill{max-width:100%;overflow:hidden}.cloud-user{max-width:130px}.syncbtn{padding:0 10px;font-size:12px}.footer{padding-left:8px;padding-right:8px}.actions{gap:6px}.actions .syncbtn{display:inline-flex}.status{max-width:38%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 
 /* sequential bucket add */
@@ -40,7 +40,7 @@
 /* iPad / iPhone Safari touch support */
 button,label,summary,.chip,.qa-set-btn,.nav-label,.bucket-delete,.dig-delete{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 button,.qa-set-btn,.chip{cursor:pointer}
-</style><meta content="#f7f3eb" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="default" name="apple-mobile-web-app-status-bar-style"/><meta content="나의 기록" name="apple-mobile-web-app-title"/><link href="./manifest.webmanifest" rel="manifest"/><link href="./icon-192.png" rel="apple-touch-icon"/></head><body><div id="ipadTestMarker" style="position:fixed;right:8px;top:8px;z-index:99999;background:#fff8;border:1px solid #ddd;border-radius:999px;padding:5px 9px;font:700 11px -apple-system,BlinkMacSystemFont,sans-serif;pointer-events:none">iPad TEST v2</div>
+</style><meta content="#f7f3eb" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="default" name="apple-mobile-web-app-status-bar-style"/><meta content="나의 기록" name="apple-mobile-web-app-title"/><link href="./manifest.webmanifest" rel="manifest"/><link href="./icon-192.png" rel="apple-touch-icon"/></head><body>
 <input checked="" class="tab-radio" id="t1" name="mainTab" type="radio"/><input class="tab-radio" id="t2" name="mainTab" type="radio"/><input class="tab-radio" id="t3" name="mainTab" type="radio"/><input class="tab-radio" id="t4" name="mainTab" type="radio"/><input class="tab-radio" id="t5" name="mainTab" type="radio"/>
 <div class="app"><div class="wrap">
 <section class="page p1"><header><div><h1>한 달의 기록</h1><div class="subtitle">한 달 동안 남은 장면과 취향을 모아보세요.</div></div><div class="month-nav"><button class="prev-month" type="button">‹</button><div class="month-title">2026년 9월</div><button class="next-month" type="button">›</button></div></header><main class="paper"><div class="grid">
@@ -503,9 +503,18 @@ button,.qa-set-btn,.chip{cursor:pointer}
 <div class="auth-msg" id="authMsg"></div>
 </div>
 </div>
-<script>
-// Standalone offline preview: intentionally no Firebase/network imports.
-const db=null, auth=null;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={"apiKey":"AIzaSyCOy8x5kPeJUUqRUjEHRqckT2ReULEoUac","authDomain":"maeum-jogak2.firebaseapp.com","projectId":"maeum-jogak2","storageBucket":"maeum-jogak2.firebasestorage.app","messagingSenderId":"942972843404","appId":"1:942972843404:web:8148d7610469425609d2a9","measurementId":"G-HCZ819E5VC"};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+enableIndexedDbPersistence(db).catch(()=>{});
+
 
 const STORE='my-record-pwa-v1';
 const DEVICE_KEY='my-record-pwa-device';
@@ -704,26 +713,19 @@ document.getElementById('qaWriteBtn')?.addEventListener('click',()=>{document.ge
 document.getElementById('qaArchiveBtn')?.addEventListener('click',()=>{document.querySelectorAll('.qa-set-panel').forEach(p=>p.classList.remove('active'));document.querySelector('.qa-set-menu').style.display='none';document.getElementById('qaArchive').classList.add('active');document.getElementById('qaArchiveBtn').classList.add('active');document.getElementById('qaWriteBtn').classList.remove('active');buildQaArchive()});
 refreshPeriodPanel('year');refreshPeriodPanel('month');refreshPeriodPanel('day');
 
-// Offline preview auth state
-offlineBypass=true;
-currentUser=null;
-const authLayer=document.getElementById('authLayer');
-if(authLayer){authLayer.classList.remove('show');authLayer.style.display='none';authLayer.style.pointerEvents='none';}
-const userBadge=document.getElementById('userBadge');
-if(userBadge) userBadge.textContent='오프라인 미리보기';
-const logoutBtn=document.getElementById('logoutBtn');
-if(logoutBtn) logoutBtn.style.display='none';
-setStatus('오프라인 저장 중','off',true);
+// Auth
+const layer=document.getElementById('authLayer'), msg=document.getElementById('authMsg');
+function authError(e){const code=e&&e.code||'';if(code.includes('invalid-credential'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일이에요.';if(code.includes('weak-password'))return '비밀번호는 6자 이상으로 입력해주세요.';if(code.includes('invalid-email'))return '이메일 형식을 확인해주세요.';return '로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'}
+document.getElementById('loginBtn').addEventListener('click',async()=>{msg.textContent='';try{await signInWithEmailAndPassword(auth,document.getElementById('authEmail').value.trim(),document.getElementById('authPassword').value)}catch(e){msg.textContent=authError(e)}});
+document.getElementById('signupBtn').addEventListener('click',async()=>{msg.textContent='';try{await createUserWithEmailAndPassword(auth,document.getElementById('authEmail').value.trim(),document.getElementById('authPassword').value)}catch(e){msg.textContent=authError(e)}});
+document.getElementById('offlineBtn').addEventListener('click',()=>{offlineBypass=true;layer.classList.remove('show');setStatus('오프라인 저장 중','off')});
+document.getElementById('logoutBtn').addEventListener('click',()=>signOut(auth));
+onAuthStateChanged(auth,async user=>{syncStatusSettled=false;currentUser=user||null;document.getElementById('logoutBtn').style.display=user?'inline-flex':'none';document.getElementById('userBadge').textContent=user?user.email:'오프라인';if(user){layer.classList.remove('show');setStatus('로그인됨 · 동기화 준비','busy');subscribeCloud();await fullSync(false)}else{if(unsubCloud){unsubCloud();unsubCloud=null}if(!offlineBypass&&navigator.onLine)layer.classList.add('show');setStatus(navigator.onLine?'로그인 필요':'오프라인 저장 중','off')}});
+window.addEventListener('online',()=>{syncStatusSettled=false;setStatus(currentUser?'연결됨 · 동기화 확인 중':'온라인 · 로그인 필요','busy');if(currentUser)fullSync(false);else if(!offlineBypass)layer.classList.add('show')});
+window.addEventListener('offline',()=>setStatus('오프라인 — 기기에 안전하게 저장 중','off'));
 
-// Test page: never register the production service worker.
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const regs = await navigator.serviceWorker.getRegistrations();
-      // Do not unregister the production app's worker; this page simply avoids registering one.
-    } catch (e) {}
-  });
-}
+// PWA
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.error));
 
 // Boot
 viewMonth=storageGet(STORE+':viewMonth')||'2026-09';
