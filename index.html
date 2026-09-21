@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>나의 기록</title>
+<style>
+:root{--bg:#f7f3eb;--paper:#fffdf8;--ink:#393a3b;--muted:#8c8a84;--blue:#5d87a6;--blue2:#dbe9f1;--line:#ddd8ce;--gold:#d0a84c;--shadow:0 10px 30px rgba(73,64,50,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}body{padding-bottom:150px}button,input,textarea,select{font:inherit}.wrap{max-width:980px;margin:auto;padding:20px 14px 30px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 4px 16px}h1{font-size:26px;margin:0;font-weight:800;letter-spacing:-.04em}.subtitle{font-size:13px;color:var(--muted);margin-top:4px}.month-nav{display:flex;align-items:center;gap:7px}.month-nav button{border:1px solid var(--line);background:var(--paper);border-radius:12px;min-width:38px;height:38px;color:var(--ink)}.month-title{font-size:16px;font-weight:800;min-width:115px;text-align:center}.paper{background:var(--paper);border:1px solid #ece6dc;border-radius:22px;box-shadow:var(--shadow);padding:18px}textarea,input[type=text],input[type=date]{width:100%;border:0;outline:0;background:transparent;color:var(--ink);line-height:1.65;resize:none}textarea{min-height:72px}textarea::placeholder,input::placeholder{color:#bbb7ae}
+.tab-radio{position:fixed;opacity:0;pointer-events:none}.page{display:none}#t1:checked~.app .p1,#t2:checked~.app .p2,#t3:checked~.app .p3,#t4:checked~.app .p4,#t5:checked~.app .p5{display:block}#t1:checked~.footer .n1,#t2:checked~.footer .n2,#t3:checked~.footer .n3,#t4:checked~.footer .n4,#t5:checked~.footer .n5{background:var(--paper);color:var(--blue);box-shadow:0 2px 8px rgba(73,64,50,.08)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}.card{border-top:2px solid var(--blue2);padding:11px 4px 4px;min-height:112px;position:relative}.card.wide{grid-column:1/-1}.label{color:var(--blue);font-weight:900;font-size:15px;margin-bottom:7px;display:flex;align-items:center;gap:7px;padding-right:34px}.label:after{content:"";height:1px;background:var(--blue2);flex:1}.star-wrap{position:absolute;right:8px;top:8px;z-index:2}.star{position:absolute;opacity:0}.star+label{font-size:25px;line-height:1;cursor:pointer;color:#b8b3aa}.star+label:before{content:"☆"}.star:checked+label:before{content:"★";color:var(--gold)}
+.topic{padding:4px 4px 18px;border-bottom:1px solid #eee8de}.eyebrow{font-size:12px;color:var(--muted);margin-bottom:6px}.topic input{font-size:24px;font-weight:850;height:42px}.hint{font-size:12px;color:var(--muted);margin-top:5px}.section{margin-top:20px}.section-title{font-weight:900;font-size:16px;margin:0 0 10px}.entry{border:1px solid #ebe5da;border-radius:16px;padding:12px 13px;background:#fffefb;position:relative;margin-bottom:10px}.entry-head{display:flex;gap:8px;align-items:center;margin-bottom:7px;padding-right:38px}.entry-head input{width:145px;height:32px;font-size:13px;color:var(--muted)}.wrapup{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini{border-top:2px solid var(--blue2);padding-top:10px;position:relative}.mini.wide{grid-column:1/-1}.add-toggle{position:absolute;opacity:0;pointer-events:none}.extra-entry{display:none}#digadd1:checked~.dig-extra1,#digadd2:checked~.dig-extra2,#digadd3:checked~.dig-extra3{display:block}.add-label{display:inline-flex;align-items:center;border:1px solid var(--line);background:#fff;border-radius:12px;min-height:36px;padding:0 12px;color:var(--blue);font-weight:800;cursor:pointer;margin-bottom:10px}
+.bucket-list{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}.bucket{border-top:2px solid var(--blue2);padding:11px 4px 8px;min-height:150px;position:relative}.bucket-head{display:flex;align-items:center;gap:8px;padding-right:38px;margin-bottom:5px}.bucket-label{color:var(--blue);font-weight:900;font-size:15px;display:flex;align-items:center;gap:7px;flex:1}.bucket-label:after{content:"";height:1px;background:var(--blue2);flex:1}.bucket-check{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:1.5px solid #cfc9be;border-radius:6px;background:#fff;display:grid;place-items:center;margin:0;flex:0 0 auto}.bucket-check:checked{border-color:var(--blue);background:#edf4f8}.bucket-check:checked:after{content:"✓";color:var(--blue);font-weight:900;font-size:14px}.bucket-main input{font-weight:800;font-size:16px;height:36px}.bucket-main textarea{min-height:58px}.bucket-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}.bucket-meta select{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 8px;color:var(--muted)}.bucket .star-wrap{right:7px;top:8px}.done:checked~.bucket-main input[type=text]{text-decoration:line-through;color:#999}@media(max-width:650px){.bucket-list{grid-template-columns:1fr;gap:7px}}
+.qa-intro{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.qa-badge{background:#edf4f8;color:var(--blue);border-radius:14px;padding:10px 14px;font-weight:900}.qa-list{display:flex;flex-direction:column;gap:8px}.qa-item{border:1px solid #ebe5da;border-radius:15px;background:#fffefb;overflow:hidden}.qa-item summary{list-style:none;display:flex;align-items:center;gap:10px;padding:13px 46px 13px 13px;cursor:pointer;position:relative;font-weight:750}.qa-item summary::-webkit-details-marker{display:none}.qa-item .star-wrap{top:11px;right:12px}.qnum{color:var(--blue);font-weight:900;min-width:40px}.qa-answer{border-top:1px solid #eee8de;padding:12px 14px;min-height:100px;background:#fff}.qa-item[open] summary{background:#fbfaf6}
+.archive-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;color:#6f6b65}.archive-placeholder{border:1px dashed #d8d2c7;border-radius:18px;padding:30px 18px;text-align:center;color:var(--muted);background:#fffefb}.archive-list{display:flex;flex-direction:column;gap:10px}.archive-card{border:1px solid #ebe5da;border-radius:15px;padding:13px;background:#fffefb}.archive-type{font-size:12px;color:var(--blue);font-weight:900;margin-bottom:4px}.archive-title{font-weight:800}.archive-text{font-size:14px;color:#68645f;margin-top:5px;white-space:pre-wrap}
+.footer{position:fixed;left:0;right:0;bottom:0;background:rgba(247,243,235,.97);border-top:1px solid rgba(221,216,206,.8);padding:8px 12px max(8px,env(safe-area-inset-bottom));z-index:9999}.actions{max-width:980px;margin:0 auto 8px;display:flex;gap:8px;justify-content:flex-end;align-items:center}.status{font-size:12px;color:var(--muted);margin-right:auto}.ghost,.primary{border-radius:14px;height:42px;padding:0 16px;font-weight:800}.ghost{border:1px solid var(--line);background:var(--paper)}.primary{border:0;background:var(--blue);color:white}.bottom-nav{max-width:740px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);background:#ebe6dd;border-radius:15px;padding:4px;gap:4px}.nav-label{height:42px;display:flex;align-items:center;justify-content:center;border-radius:11px;color:#797670;font-weight:800;cursor:pointer;white-space:nowrap;font-size:13px}
+@media(max-width:650px){body{padding-bottom:150px}.wrap{padding:12px 10px 20px}h1{font-size:22px}.subtitle{display:none}.paper{padding:13px;border-radius:18px}.grid{grid-template-columns:1fr;gap:7px}.card.wide{grid-column:auto}.wrapup{grid-template-columns:1fr}.mini.wide{grid-column:auto}.bottom-nav{max-width:none}.nav-label{font-size:11px}.actions .ghost{display:none}}
+
+.bucket-add-toggle{position:absolute;opacity:0;pointer-events:none}.bucket-add-label{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--paper);color:var(--blue);font-weight:800;border-radius:12px;padding:9px 14px;cursor:pointer;margin-top:14px}.bucket-extra{display:none}.bucket-next{display:none}.bucket-add-toggle:checked + .bucket-add-label{display:none}.bucket-add-toggle:checked + .bucket-add-label + .bucket-extra{display:block}.bucket-add-toggle:checked + .bucket-add-label + .bucket-extra + .bucket-next{display:inline-flex}
+
+#bucketAdd1:checked ~ label[for="bucketAdd2"]{display:inline-flex}
+#bucketAdd1:checked ~ #bucketAdd2{display:block;position:absolute;opacity:0;pointer-events:none}
+
+/* PWA / sync */
+.syncbar{max-width:980px;margin:0 auto 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:0 4px}.sync-pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,253,248,.92);border-radius:999px;padding:7px 11px;font-size:12px;color:#6f6b65}.sync-dot{width:8px;height:8px;border-radius:50%;background:#aaa}.sync-dot.ok{background:#6f9d72}.sync-dot.busy{background:#d0a84c}.sync-dot.off{background:#b36f6f}.sync-spacer{flex:1}.syncbtn,.tinybtn{border:1px solid var(--line);background:var(--paper);border-radius:12px;min-height:36px;padding:0 12px;color:var(--ink);font-weight:800;cursor:pointer}.syncbtn.primary-sync{background:var(--blue);border-color:var(--blue);color:white}.tinybtn{font-size:12px}.auth-layer{position:fixed;inset:0;z-index:20000;background:rgba(247,243,235,.96);display:none;align-items:center;justify-content:center;padding:22px}.auth-layer.show{display:flex}.auth-card{width:min(430px,100%);background:var(--paper);border:1px solid #ece6dc;border-radius:24px;box-shadow:var(--shadow);padding:24px}.auth-card h2{margin:0 0 6px;font-size:25px}.auth-card p{margin:0 0 18px;color:var(--muted);font-size:13px;line-height:1.6}.auth-card input{height:44px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:0 12px;margin:6px 0}.auth-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.auth-msg{min-height:20px;font-size:12px;color:#9c5b5b;margin-top:9px}.offline-open{margin-top:8px;width:100%}.archive-controls .chip{cursor:pointer}.archive-controls .chip.active{background:var(--blue);border-color:var(--blue);color:#fff}.archive-search{width:100%;height:40px!important;border:1px solid var(--line)!important;border-radius:12px!important;background:#fff!important;padding:0 12px!important;margin-bottom:12px}.install-hint{font-size:11px;color:var(--muted)}.cloud-user{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.danger-note{font-size:11px;color:#8a7362;margin-left:4px}
+@media(max-width:650px){.syncbar{padding:0}.sync-spacer{display:none}.sync-pill{max-width:100%;overflow:hidden}.cloud-user{max-width:130px}.syncbtn{padding:0 10px;font-size:12px}.footer{padding-left:8px;padding-right:8px}.actions{gap:6px}.actions .primary{padding:0 12px}.actions .syncbtn{display:inline-flex}.status{max-width:38%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+</style><meta content="#f7f3eb" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="default" name="apple-mobile-web-app-status-bar-style"/><meta content="나의 기록" name="apple-mobile-web-app-title"/><link href="./manifest.webmanifest" rel="manifest"/><link href="./icon-192.png" rel="apple-touch-icon"/></head><body>
+<input checked="" class="tab-radio" id="t1" name="mainTab" type="radio"/><input class="tab-radio" id="t2" name="mainTab" type="radio"/><input class="tab-radio" id="t3" name="mainTab" type="radio"/><input class="tab-radio" id="t4" name="mainTab" type="radio"/><input class="tab-radio" id="t5" name="mainTab" type="radio"/>
+<div class="app"><div class="wrap">
+<section class="page p1"><header><div><h1>한 달의 기록</h1><div class="subtitle">한 달 동안 남은 장면과 취향을 모아보세요.</div></div><div class="month-nav"><button class="prev-month" type="button">‹</button><div class="month-title">2026년 9월</div><button class="next-month" type="button">›</button></div></header><main class="paper"><div class="grid">
+<section class="card" data-archive-type="한달기록" data-title="이달의 장면"><div class="star-wrap"><input class="star" id="mstar0" type="checkbox"/><label for="mstar0"></label></div><div class="label">이달의 장면</div><textarea data-save="monthly-scene" placeholder="이번 달 가장 선명하게 남은 장면은?"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 물건"><div class="star-wrap"><input class="star" id="mstar1" type="checkbox"/><label for="mstar1"></label></div><div class="label">이달의 물건</div><textarea data-save="monthly-item" placeholder="자주 쓰거나 기억에 남은 물건"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 시간"><div class="star-wrap"><input class="star" id="mstar2" type="checkbox"/><label for="mstar2"></label></div><div class="label">이달의 시간</div><textarea data-save="monthly-time" placeholder="좋아했던 시간대, 순간, 하루"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 관계"><div class="star-wrap"><input class="star" id="mstar3" type="checkbox"/><label for="mstar3"></label></div><div class="label">이달의 관계</div><textarea data-save="monthly-relation" placeholder="가족·친구·새로운 인연과의 기억"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 장소"><div class="star-wrap"><input class="star" id="mstar4" type="checkbox"/><label for="mstar4"></label></div><div class="label">이달의 장소</div><textarea data-save="monthly-place" placeholder="자주 갔거나 마음에 남은 공간"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 책"><div class="star-wrap"><input class="star" id="mstar5" type="checkbox"/><label for="mstar5"></label></div><div class="label">이달의 책</div><textarea data-save="monthly-book" placeholder="읽은 책, 기억에 남은 문장"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 맛"><div class="star-wrap"><input class="star" id="mstar6" type="checkbox"/><label for="mstar6"></label></div><div class="label">이달의 맛</div><textarea data-save="monthly-taste" placeholder="맛있었던 음식과 음료"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 영상"><div class="star-wrap"><input class="star" id="mstar7" type="checkbox"/><label for="mstar7"></label></div><div class="label">이달의 영상</div><textarea data-save="monthly-video" placeholder="영화·드라마·유튜브·방송"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 문장"><div class="star-wrap"><input class="star" id="mstar8" type="checkbox"/><label for="mstar8"></label></div><div class="label">이달의 문장</div><textarea data-save="monthly-sentence" placeholder="내가 쓴 말, 들은 말, 오래 남은 한 문장"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 문화"><div class="star-wrap"><input class="star" id="mstar9" type="checkbox"/><label for="mstar9"></label></div><div class="label">이달의 문화</div><textarea data-save="monthly-culture" placeholder="전시·공연·게임·콘텐츠"></textarea></section><section class="card" data-archive-type="한달기록" data-title="이달의 음악"><div class="star-wrap"><input class="star" id="mstar10" type="checkbox"/><label for="mstar10"></label></div><div class="label">이달의 음악</div><textarea data-save="monthly-music" placeholder="많이 들은 노래, 아티스트"></textarea></section><section class="card wide" data-archive-type="한달기록" data-title="이달의 회고"><div class="star-wrap"><input class="star" id="mstar11" type="checkbox"/><label for="mstar11"></label></div><div class="label">이달의 회고</div><textarea data-save="monthly-review" placeholder="이번 달의 나에게 남기고 싶은 말"></textarea></section><section class="card wide" data-archive-type="한달기록" data-title="다음달 목표"><div class="star-wrap"><input class="star" id="mstar12" type="checkbox"/><label for="mstar12"></label></div><div class="label">다음달 목표</div><textarea data-save="monthly-goal" placeholder="다음 달에 이어가고 싶은 것"></textarea></section></div></main></section>
+<section class="page p2"><header><div><h1>디깅 기록</h1><div class="subtitle">한 달에 하나의 주제를 정해 깊게 파고 기록해보세요.</div></div><div class="month-nav"><button class="prev-month" type="button">‹</button><div class="month-title">2026년 9월</div><button class="next-month" type="button">›</button></div></header><main class="paper"><section class="topic"><div class="eyebrow">이번 달의 디깅 주제</div><input data-save="dig-topic" placeholder="예: 기록, 글쓰기, 머지게임, 커피…" type="text"/><div class="hint">이번 달엔 하나의 주제만 정해두고, 발견할 때마다 아래에 기록해보세요.</div></section><section class="section"><div class="section-title">디깅 기록</div>
+<article class="entry" data-archive-type="디깅기록" data-title="디깅 기록 1"><div class="star-wrap"><input class="star" id="dstar1" type="checkbox"/><label for="dstar1"></label></div><div class="entry-head"><input data-save="dig-date-1" type="date" value="2026-09-21"/></div><textarea data-save="dig1" placeholder="오늘 이 주제에 대해 본 것, 읽은 것, 새로 알게 된 것, 떠오른 생각을 적어보세요."></textarea></article>
+<input class="add-toggle" id="digadd1" type="checkbox"/><label class="add-label" for="digadd1">+ 기록 추가</label><article class="entry extra-entry dig-extra1" data-archive-type="디깅기록" data-title="디깅 기록 2"><div class="star-wrap"><input class="star" id="dstar2" type="checkbox"/><label for="dstar2"></label></div><div class="entry-head"><input data-save="dig-date-2" type="date"/></div><textarea data-save="dig2" placeholder="새 디깅 기록"></textarea></article>
+</section><section class="section"><div class="section-title">이번 달 디깅 정리</div><div class="wrapup">
+<div class="mini" data-archive-type="디깅기록" data-title="가장 인상 깊었던 것"><div class="star-wrap"><input class="star" id="dwrapstar1" type="checkbox"/><label for="dwrapstar1"></label></div><div class="label">가장 인상 깊었던 것</div><textarea data-save="dig-best" placeholder="이번 달 가장 기억에 남은 발견"></textarea></div>
+<div class="mini" data-archive-type="디깅기록" data-title="새로 알게 된 것"><div class="star-wrap"><input class="star" id="dwrapstar2" type="checkbox"/><label for="dwrapstar2"></label></div><div class="label">새로 알게 된 것</div><textarea data-save="dig-learn" placeholder="새롭게 알게 된 점"></textarea></div>
+<div class="mini wide" data-archive-type="디깅기록" data-title="내 생각의 변화"><div class="star-wrap"><input class="star" id="dwrapstar3" type="checkbox"/><label for="dwrapstar3"></label></div><div class="label">내 생각의 변화</div><textarea data-save="dig-change" placeholder="처음과 지금, 생각이 어떻게 달라졌나요?"></textarea></div>
+<div class="mini wide" data-archive-type="디깅기록" data-title="다음 달에 파보고 싶은 것"><div class="star-wrap"><input class="star" id="dwrapstar4" type="checkbox"/><label for="dwrapstar4"></label></div><div class="label">다음 달에 파보고 싶은 것</div><textarea data-save="dig-next" placeholder="다음 달 디깅 주제 후보"></textarea></div>
+</div></section></main></section>
+<section class="page p3"><header><div><h1>버킷리스트</h1><div class="subtitle">하고 싶은 일을 하나씩 모아두세요.</div></div></header><main class="paper"><div class="bucket-list"><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 1">
+<div class="bucket-head"><input class="bucket-check done" id="done1" type="checkbox"/><div class="bucket-label">버킷 01</div></div>
+<span class="star-wrap"><input class="star" id="bstar1" type="checkbox"/><label aria-label="별표" for="bstar1"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-1" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-1" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-1"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 2">
+<div class="bucket-head"><input class="bucket-check done" id="done2" type="checkbox"/><div class="bucket-label">버킷 02</div></div>
+<span class="star-wrap"><input class="star" id="bstar2" type="checkbox"/><label aria-label="별표" for="bstar2"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-2" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-2" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-2"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 3">
+<div class="bucket-head"><input class="bucket-check done" id="done3" type="checkbox"/><div class="bucket-label">버킷 03</div></div>
+<span class="star-wrap"><input class="star" id="bstar3" type="checkbox"/><label aria-label="별표" for="bstar3"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-3" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-3" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-3"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 4">
+<div class="bucket-head"><input class="bucket-check done" id="done4" type="checkbox"/><div class="bucket-label">버킷 04</div></div>
+<span class="star-wrap"><input class="star" id="bstar4" type="checkbox"/><label aria-label="별표" for="bstar4"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-4" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-4" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-4"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 5">
+<div class="bucket-head"><input class="bucket-check done" id="done5" type="checkbox"/><div class="bucket-label">버킷 05</div></div>
+<span class="star-wrap"><input class="star" id="bstar5" type="checkbox"/><label aria-label="별표" for="bstar5"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-5" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-5" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-5"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article><article class="bucket" data-archive-type="버킷리스트" data-title="버킷 6">
+<div class="bucket-head"><input class="bucket-check done" id="done6" type="checkbox"/><div class="bucket-label">버킷 06</div></div>
+<span class="star-wrap"><input class="star" id="bstar6" type="checkbox"/><label aria-label="별표" for="bstar6"></label></span>
+<div class="bucket-main"><input data-save="bucket-title-6" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-6" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-6"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div>
+</article></div>
+<div class="bucket-additions">
+<input class="bucket-add-toggle" id="bucketAdd1" type="checkbox"/><label class="bucket-add-label" for="bucketAdd1">+ 버킷 추가</label>
+<div class="bucket-extra"><div class="bucket-list">
+<article class="bucket" data-archive-type="버킷리스트" data-title="버킷 7"><div class="bucket-head"><input class="bucket-check done" id="done7" type="checkbox"/><div class="bucket-label">버킷 07</div></div><span class="star-wrap"><input class="star" id="bstar7" type="checkbox"/><label aria-label="별표" for="bstar7"></label></span><div class="bucket-main"><input data-save="bucket-title-7" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-7" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-7"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div></article>
+<article class="bucket" data-archive-type="버킷리스트" data-title="버킷 8"><div class="bucket-head"><input class="bucket-check done" id="done8" type="checkbox"/><div class="bucket-label">버킷 08</div></div><span class="star-wrap"><input class="star" id="bstar8" type="checkbox"/><label aria-label="별표" for="bstar8"></label></span><div class="bucket-main"><input data-save="bucket-title-8" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-8" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-8"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div></article>
+</div></div>
+<input class="bucket-add-toggle bucket-next" id="bucketAdd2" type="checkbox"/><label class="bucket-add-label bucket-next" for="bucketAdd2">+ 버킷 추가</label>
+<div class="bucket-extra"><div class="bucket-list">
+<article class="bucket" data-archive-type="버킷리스트" data-title="버킷 9"><div class="bucket-head"><input class="bucket-check done" id="done9" type="checkbox"/><div class="bucket-label">버킷 09</div></div><span class="star-wrap"><input class="star" id="bstar9" type="checkbox"/><label aria-label="별표" for="bstar9"></label></span><div class="bucket-main"><input data-save="bucket-title-9" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-9" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-9"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div></article>
+<article class="bucket" data-archive-type="버킷리스트" data-title="버킷 10"><div class="bucket-head"><input class="bucket-check done" id="done10" type="checkbox"/><div class="bucket-label">버킷 10</div></div><span class="star-wrap"><input class="star" id="bstar10" type="checkbox"/><label aria-label="별표" for="bstar10"></label></span><div class="bucket-main"><input data-save="bucket-title-10" placeholder="하고 싶은 일을 적어보세요" type="text"/><textarea data-save="bucket-note-10" placeholder="왜 하고 싶은지, 떠오르는 메모를 적어보세요. (선택)"></textarea><div class="bucket-meta"><select data-save="bucket-cat-10"><option>여행</option><option>경험</option><option>배우기</option><option>만들기</option><option>갖고 싶은 것</option><option>기타</option></select></div></div></article>
+</div></div>
+</div></main></section>
+<section class="page p4"><header><div><h1>셀프 Q&amp;A</h1><div class="subtitle">백문백답처럼 질문에 답하며 나를 기록해보세요.</div></div></header><main class="paper"><div class="qa-intro"><div class="qa-badge">백문백답 · 100개의 질문</div><div class="hint">질문을 눌러 답을 펼쳐보세요.</div></div><div class="qa-list"><details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q1. 요즘 가장 자주 생각하는 것은 무엇인가요?">
+<summary><span class="qnum">Q1</span><span class="qtext">요즘 가장 자주 생각하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar1" type="checkbox"/><label aria-label="별표" for="qstar1"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-1" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q2. 지금의 나를 세 단어로 표현한다면?">
+<summary><span class="qnum">Q2</span><span class="qtext">지금의 나를 세 단어로 표현한다면?</span><span class="star-wrap"><input class="star" id="qstar2" type="checkbox"/><label aria-label="별표" for="qstar2"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-2" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q3. 요즘 가장 기대되는 일은 무엇인가요?">
+<summary><span class="qnum">Q3</span><span class="qtext">요즘 가장 기대되는 일은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar3" type="checkbox"/><label aria-label="별표" for="qstar3"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-3" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q4. 최근 나를 웃게 한 것은 무엇인가요?">
+<summary><span class="qnum">Q4</span><span class="qtext">최근 나를 웃게 한 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar4" type="checkbox"/><label aria-label="별표" for="qstar4"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-4" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q5. 요즘 가장 많이 듣는 노래는 무엇인가요?">
+<summary><span class="qnum">Q5</span><span class="qtext">요즘 가장 많이 듣는 노래는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar5" type="checkbox"/><label aria-label="별표" for="qstar5"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-5" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q6. 지금 가장 좋아하는 음식은 무엇인가요?">
+<summary><span class="qnum">Q6</span><span class="qtext">지금 가장 좋아하는 음식은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar6" type="checkbox"/><label aria-label="별표" for="qstar6"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-6" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q7. 요즘 가장 자주 가는 장소는 어디인가요?">
+<summary><span class="qnum">Q7</span><span class="qtext">요즘 가장 자주 가는 장소는 어디인가요?</span><span class="star-wrap"><input class="star" id="qstar7" type="checkbox"/><label aria-label="별표" for="qstar7"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-7" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q8. 최근 가장 잘 샀다고 생각하는 물건은 무엇인가요?">
+<summary><span class="qnum">Q8</span><span class="qtext">최근 가장 잘 샀다고 생각하는 물건은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar8" type="checkbox"/><label aria-label="별표" for="qstar8"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-8" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q9. 요즘 가장 배우고 싶은 것은 무엇인가요?">
+<summary><span class="qnum">Q9</span><span class="qtext">요즘 가장 배우고 싶은 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar9" type="checkbox"/><label aria-label="별표" for="qstar9"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-9" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q10. 요즘 가장 시간을 많이 쓰는 일은 무엇인가요?">
+<summary><span class="qnum">Q10</span><span class="qtext">요즘 가장 시간을 많이 쓰는 일은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar10" type="checkbox"/><label aria-label="별표" for="qstar10"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-10" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q11. 어릴 때 가장 좋아했던 놀이는 무엇이었나요?">
+<summary><span class="qnum">Q11</span><span class="qtext">어릴 때 가장 좋아했던 놀이는 무엇이었나요?</span><span class="star-wrap"><input class="star" id="qstar11" type="checkbox"/><label aria-label="별표" for="qstar11"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-11" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q12. 어릴 때 되고 싶었던 것은 무엇이었나요?">
+<summary><span class="qnum">Q12</span><span class="qtext">어릴 때 되고 싶었던 것은 무엇이었나요?</span><span class="star-wrap"><input class="star" id="qstar12" type="checkbox"/><label aria-label="별표" for="qstar12"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-12" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q13. 학창시절 가장 기억에 남는 순간은 무엇인가요?">
+<summary><span class="qnum">Q13</span><span class="qtext">학창시절 가장 기억에 남는 순간은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar13" type="checkbox"/><label aria-label="별표" for="qstar13"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-13" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q14. 어릴 때 가장 좋아했던 책이나 만화는 무엇인가요?">
+<summary><span class="qnum">Q14</span><span class="qtext">어릴 때 가장 좋아했던 책이나 만화는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar14" type="checkbox"/><label aria-label="별표" for="qstar14"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-14" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q15. 어릴 때 자주 먹었던 음식은 무엇인가요?">
+<summary><span class="qnum">Q15</span><span class="qtext">어릴 때 자주 먹었던 음식은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar15" type="checkbox"/><label aria-label="별표" for="qstar15"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-15" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q16. 예전의 나에게 한마디 해준다면 무엇인가요?">
+<summary><span class="qnum">Q16</span><span class="qtext">예전의 나에게 한마디 해준다면 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar16" type="checkbox"/><label aria-label="별표" for="qstar16"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-16" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q17. 어릴 때의 나와 지금의 내가 가장 달라진 점은 무엇인가요?">
+<summary><span class="qnum">Q17</span><span class="qtext">어릴 때의 나와 지금의 내가 가장 달라진 점은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar17" type="checkbox"/><label aria-label="별표" for="qstar17"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-17" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q18. 아직도 기억나는 어린 시절의 냄새나 소리가 있나요?">
+<summary><span class="qnum">Q18</span><span class="qtext">아직도 기억나는 어린 시절의 냄새나 소리가 있나요?</span><span class="star-wrap"><input class="star" id="qstar18" type="checkbox"/><label aria-label="별표" for="qstar18"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-18" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q19. 어릴 때 가장 좋아했던 장소는 어디인가요?">
+<summary><span class="qnum">Q19</span><span class="qtext">어릴 때 가장 좋아했던 장소는 어디인가요?</span><span class="star-wrap"><input class="star" id="qstar19" type="checkbox"/><label aria-label="별표" for="qstar19"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-19" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q20. 과거의 나에게서 지금도 남아 있는 취향은 무엇인가요?">
+<summary><span class="qnum">Q20</span><span class="qtext">과거의 나에게서 지금도 남아 있는 취향은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar20" type="checkbox"/><label aria-label="별표" for="qstar20"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-20" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q21. 내가 가장 편안함을 느끼는 순간은 언제인가요?">
+<summary><span class="qnum">Q21</span><span class="qtext">내가 가장 편안함을 느끼는 순간은 언제인가요?</span><span class="star-wrap"><input class="star" id="qstar21" type="checkbox"/><label aria-label="별표" for="qstar21"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-21" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q22. 혼자 있을 때 가장 좋아하는 것은 무엇인가요?">
+<summary><span class="qnum">Q22</span><span class="qtext">혼자 있을 때 가장 좋아하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar22" type="checkbox"/><label aria-label="별표" for="qstar22"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-22" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q23. 사람들이 나를 어떻게 기억해주면 좋겠나요?">
+<summary><span class="qnum">Q23</span><span class="qtext">사람들이 나를 어떻게 기억해주면 좋겠나요?</span><span class="star-wrap"><input class="star" id="qstar23" type="checkbox"/><label aria-label="별표" for="qstar23"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-23" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q24. 내가 생각하는 나의 장점은 무엇인가요?">
+<summary><span class="qnum">Q24</span><span class="qtext">내가 생각하는 나의 장점은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar24" type="checkbox"/><label aria-label="별표" for="qstar24"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-24" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q25. 내가 고치고 싶은 습관이 있다면 무엇인가요?">
+<summary><span class="qnum">Q25</span><span class="qtext">내가 고치고 싶은 습관이 있다면 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar25" type="checkbox"/><label aria-label="별표" for="qstar25"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-25" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q26. 요즘 내가 자주 미루는 것은 무엇인가요?">
+<summary><span class="qnum">Q26</span><span class="qtext">요즘 내가 자주 미루는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar26" type="checkbox"/><label aria-label="별표" for="qstar26"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-26" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q27. 내가 나답다고 느끼는 순간은 언제인가요?">
+<summary><span class="qnum">Q27</span><span class="qtext">내가 나답다고 느끼는 순간은 언제인가요?</span><span class="star-wrap"><input class="star" id="qstar27" type="checkbox"/><label aria-label="별표" for="qstar27"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-27" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q28. 요즘 나에게 가장 필요한 것은 무엇인가요?">
+<summary><span class="qnum">Q28</span><span class="qtext">요즘 나에게 가장 필요한 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar28" type="checkbox"/><label aria-label="별표" for="qstar28"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-28" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q29. 내가 스스로에게 자주 하는 말은 무엇인가요?">
+<summary><span class="qnum">Q29</span><span class="qtext">내가 스스로에게 자주 하는 말은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar29" type="checkbox"/><label aria-label="별표" for="qstar29"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-29" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q30. 최근 새롭게 알게 된 내 모습이 있나요?">
+<summary><span class="qnum">Q30</span><span class="qtext">최근 새롭게 알게 된 내 모습이 있나요?</span><span class="star-wrap"><input class="star" id="qstar30" type="checkbox"/><label aria-label="별표" for="qstar30"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-30" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q31. 평생 한 가지 음식만 먹어야 한다면 무엇을 고를 건가요?">
+<summary><span class="qnum">Q31</span><span class="qtext">평생 한 가지 음식만 먹어야 한다면 무엇을 고를 건가요?</span><span class="star-wrap"><input class="star" id="qstar31" type="checkbox"/><label aria-label="별표" for="qstar31"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-31" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q32. 평생 한 장르의 음악만 들을 수 있다면 무엇인가요?">
+<summary><span class="qnum">Q32</span><span class="qtext">평생 한 장르의 음악만 들을 수 있다면 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar32" type="checkbox"/><label aria-label="별표" for="qstar32"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-32" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q33. 바다와 산 중 하나를 고른다면?">
+<summary><span class="qnum">Q33</span><span class="qtext">바다와 산 중 하나를 고른다면?</span><span class="star-wrap"><input class="star" id="qstar33" type="checkbox"/><label aria-label="별표" for="qstar33"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-33" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q34. 아침형 인간과 밤형 인간 중 어느 쪽에 가깝나요?">
+<summary><span class="qnum">Q34</span><span class="qtext">아침형 인간과 밤형 인간 중 어느 쪽에 가깝나요?</span><span class="star-wrap"><input class="star" id="qstar34" type="checkbox"/><label aria-label="별표" for="qstar34"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-34" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q35. 종이책과 전자책 중 어느 쪽을 더 좋아하나요?">
+<summary><span class="qnum">Q35</span><span class="qtext">종이책과 전자책 중 어느 쪽을 더 좋아하나요?</span><span class="star-wrap"><input class="star" id="qstar35" type="checkbox"/><label aria-label="별표" for="qstar35"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-35" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q36. 계획 여행과 즉흥 여행 중 어느 쪽이 더 좋나요?">
+<summary><span class="qnum">Q36</span><span class="qtext">계획 여행과 즉흥 여행 중 어느 쪽이 더 좋나요?</span><span class="star-wrap"><input class="star" id="qstar36" type="checkbox"/><label aria-label="별표" for="qstar36"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-36" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q37. 커피와 차 중 무엇을 더 좋아하나요?">
+<summary><span class="qnum">Q37</span><span class="qtext">커피와 차 중 무엇을 더 좋아하나요?</span><span class="star-wrap"><input class="star" id="qstar37" type="checkbox"/><label aria-label="별표" for="qstar37"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-37" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q38. 집에서 쉬기와 밖으로 나가기 중 어느 쪽이 더 끌리나요?">
+<summary><span class="qnum">Q38</span><span class="qtext">집에서 쉬기와 밖으로 나가기 중 어느 쪽이 더 끌리나요?</span><span class="star-wrap"><input class="star" id="qstar38" type="checkbox"/><label aria-label="별표" for="qstar38"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-38" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q39. 사진과 글 중 기억을 남기기 좋은 것은 무엇인가요?">
+<summary><span class="qnum">Q39</span><span class="qtext">사진과 글 중 기억을 남기기 좋은 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar39" type="checkbox"/><label aria-label="별표" for="qstar39"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-39" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q40. 비 오는 날과 맑은 날 중 어느 쪽을 좋아하나요?">
+<summary><span class="qnum">Q40</span><span class="qtext">비 오는 날과 맑은 날 중 어느 쪽을 좋아하나요?</span><span class="star-wrap"><input class="star" id="qstar40" type="checkbox"/><label aria-label="별표" for="qstar40"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-40" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q41. 지금 당장 어디든 갈 수 있다면 어디로 가고 싶나요?">
+<summary><span class="qnum">Q41</span><span class="qtext">지금 당장 어디든 갈 수 있다면 어디로 가고 싶나요?</span><span class="star-wrap"><input class="star" id="qstar41" type="checkbox"/><label aria-label="별표" for="qstar41"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-41" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q42. 언젠가 꼭 해보고 싶은 일은 무엇인가요?">
+<summary><span class="qnum">Q42</span><span class="qtext">언젠가 꼭 해보고 싶은 일은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar42" type="checkbox"/><label aria-label="별표" for="qstar42"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-42" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q43. 배우고 싶은 기술이나 취미가 있나요?">
+<summary><span class="qnum">Q43</span><span class="qtext">배우고 싶은 기술이나 취미가 있나요?</span><span class="star-wrap"><input class="star" id="qstar43" type="checkbox"/><label aria-label="별표" for="qstar43"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-43" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q44. 살면서 한 번쯤 만나보고 싶은 사람이 있나요?">
+<summary><span class="qnum">Q44</span><span class="qtext">살면서 한 번쯤 만나보고 싶은 사람이 있나요?</span><span class="star-wrap"><input class="star" id="qstar44" type="checkbox"/><label aria-label="별표" for="qstar44"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-44" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q45. 꼭 가보고 싶은 도시나 나라가 있나요?">
+<summary><span class="qnum">Q45</span><span class="qtext">꼭 가보고 싶은 도시나 나라가 있나요?</span><span class="star-wrap"><input class="star" id="qstar45" type="checkbox"/><label aria-label="별표" for="qstar45"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-45" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q46. 언젠가 갖고 싶은 공간은 어떤 모습인가요?">
+<summary><span class="qnum">Q46</span><span class="qtext">언젠가 갖고 싶은 공간은 어떤 모습인가요?</span><span class="star-wrap"><input class="star" id="qstar46" type="checkbox"/><label aria-label="별표" for="qstar46"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-46" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q47. 올해 안에 꼭 해보고 싶은 일이 있나요?">
+<summary><span class="qnum">Q47</span><span class="qtext">올해 안에 꼭 해보고 싶은 일이 있나요?</span><span class="star-wrap"><input class="star" id="qstar47" type="checkbox"/><label aria-label="별표" for="qstar47"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-47" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q48. 10년 뒤의 나는 어떤 하루를 보내고 있으면 좋겠나요?">
+<summary><span class="qnum">Q48</span><span class="qtext">10년 뒤의 나는 어떤 하루를 보내고 있으면 좋겠나요?</span><span class="star-wrap"><input class="star" id="qstar48" type="checkbox"/><label aria-label="별표" for="qstar48"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-48" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q49. 언젠가 만들어보고 싶은 것이 있나요?">
+<summary><span class="qnum">Q49</span><span class="qtext">언젠가 만들어보고 싶은 것이 있나요?</span><span class="star-wrap"><input class="star" id="qstar49" type="checkbox"/><label aria-label="별표" for="qstar49"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-49" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q50. 돈과 시간이 충분하다면 가장 먼저 무엇을 하고 싶나요?">
+<summary><span class="qnum">Q50</span><span class="qtext">돈과 시간이 충분하다면 가장 먼저 무엇을 하고 싶나요?</span><span class="star-wrap"><input class="star" id="qstar50" type="checkbox"/><label aria-label="별표" for="qstar50"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-50" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q51. 최근 가장 인상 깊게 읽은 문장은 무엇인가요?">
+<summary><span class="qnum">Q51</span><span class="qtext">최근 가장 인상 깊게 읽은 문장은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar51" type="checkbox"/><label aria-label="별표" for="qstar51"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-51" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q52. 다시 읽고 싶은 책은 무엇인가요?">
+<summary><span class="qnum">Q52</span><span class="qtext">다시 읽고 싶은 책은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar52" type="checkbox"/><label aria-label="별표" for="qstar52"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-52" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q53. 내 인생에 영향을 준 콘텐츠가 있나요?">
+<summary><span class="qnum">Q53</span><span class="qtext">내 인생에 영향을 준 콘텐츠가 있나요?</span><span class="star-wrap"><input class="star" id="qstar53" type="checkbox"/><label aria-label="별표" for="qstar53"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-53" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q54. 최근 재미있게 본 영상이나 작품은 무엇인가요?">
+<summary><span class="qnum">Q54</span><span class="qtext">최근 재미있게 본 영상이나 작품은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar54" type="checkbox"/><label aria-label="별표" for="qstar54"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-54" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q55. 오랫동안 좋아해 온 캐릭터나 작품이 있나요?">
+<summary><span class="qnum">Q55</span><span class="qtext">오랫동안 좋아해 온 캐릭터나 작품이 있나요?</span><span class="star-wrap"><input class="star" id="qstar55" type="checkbox"/><label aria-label="별표" for="qstar55"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-55" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q56. 나만 알고 싶은 장소나 콘텐츠가 있나요?">
+<summary><span class="qnum">Q56</span><span class="qtext">나만 알고 싶은 장소나 콘텐츠가 있나요?</span><span class="star-wrap"><input class="star" id="qstar56" type="checkbox"/><label aria-label="별표" for="qstar56"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-56" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q57. 요즘 깊게 파고 있는 관심사는 무엇인가요?">
+<summary><span class="qnum">Q57</span><span class="qtext">요즘 깊게 파고 있는 관심사는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar57" type="checkbox"/><label aria-label="별표" for="qstar57"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-57" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q58. 최근 새롭게 생긴 취향이 있나요?">
+<summary><span class="qnum">Q58</span><span class="qtext">최근 새롭게 생긴 취향이 있나요?</span><span class="star-wrap"><input class="star" id="qstar58" type="checkbox"/><label aria-label="별표" for="qstar58"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-58" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q59. 한동안 잊고 있다가 다시 좋아진 것이 있나요?">
+<summary><span class="qnum">Q59</span><span class="qtext">한동안 잊고 있다가 다시 좋아진 것이 있나요?</span><span class="star-wrap"><input class="star" id="qstar59" type="checkbox"/><label aria-label="별표" for="qstar59"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-59" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q60. 누군가에게 꼭 추천하고 싶은 것이 있나요?">
+<summary><span class="qnum">Q60</span><span class="qtext">누군가에게 꼭 추천하고 싶은 것이 있나요?</span><span class="star-wrap"><input class="star" id="qstar60" type="checkbox"/><label aria-label="별표" for="qstar60"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-60" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q61. 최근 가장 기억에 남는 대화는 무엇인가요?">
+<summary><span class="qnum">Q61</span><span class="qtext">최근 가장 기억에 남는 대화는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar61" type="checkbox"/><label aria-label="별표" for="qstar61"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-61" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q62. 요즘 가장 자주 연락하는 사람은 누구인가요?">
+<summary><span class="qnum">Q62</span><span class="qtext">요즘 가장 자주 연락하는 사람은 누구인가요?</span><span class="star-wrap"><input class="star" id="qstar62" type="checkbox"/><label aria-label="별표" for="qstar62"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-62" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q63. 누군가에게 고마웠던 최근의 순간은 무엇인가요?">
+<summary><span class="qnum">Q63</span><span class="qtext">누군가에게 고마웠던 최근의 순간은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar63" type="checkbox"/><label aria-label="별표" for="qstar63"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-63" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q64. 사람과 가까워질 때 가장 중요하다고 느끼는 것은 무엇인가요?">
+<summary><span class="qnum">Q64</span><span class="qtext">사람과 가까워질 때 가장 중요하다고 느끼는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar64" type="checkbox"/><label aria-label="별표" for="qstar64"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-64" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q65. 혼자 있는 시간과 함께 있는 시간 중 지금 더 필요한 것은 무엇인가요?">
+<summary><span class="qnum">Q65</span><span class="qtext">혼자 있는 시간과 함께 있는 시간 중 지금 더 필요한 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar65" type="checkbox"/><label aria-label="별표" for="qstar65"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-65" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q66. 내가 좋아하는 사람들의 공통점은 무엇인가요?">
+<summary><span class="qnum">Q66</span><span class="qtext">내가 좋아하는 사람들의 공통점은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar66" type="checkbox"/><label aria-label="별표" for="qstar66"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-66" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q67. 듣고 싶은 말이 있다면 무엇인가요?">
+<summary><span class="qnum">Q67</span><span class="qtext">듣고 싶은 말이 있다면 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar67" type="checkbox"/><label aria-label="별표" for="qstar67"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-67" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q68. 내가 자주 건네는 말은 무엇인가요?">
+<summary><span class="qnum">Q68</span><span class="qtext">내가 자주 건네는 말은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar68" type="checkbox"/><label aria-label="별표" for="qstar68"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-68" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q69. 최근 누군가에게 해주고 싶었던 말이 있나요?">
+<summary><span class="qnum">Q69</span><span class="qtext">최근 누군가에게 해주고 싶었던 말이 있나요?</span><span class="star-wrap"><input class="star" id="qstar69" type="checkbox"/><label aria-label="별표" for="qstar69"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-69" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q70. 좋은 관계란 어떤 관계라고 생각하나요?">
+<summary><span class="qnum">Q70</span><span class="qtext">좋은 관계란 어떤 관계라고 생각하나요?</span><span class="star-wrap"><input class="star" id="qstar70" type="checkbox"/><label aria-label="별표" for="qstar70"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-70" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q71. 오늘 하루에서 가장 좋았던 순간은 무엇인가요?">
+<summary><span class="qnum">Q71</span><span class="qtext">오늘 하루에서 가장 좋았던 순간은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar71" type="checkbox"/><label aria-label="별표" for="qstar71"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-71" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q72. 요즘 하루 중 가장 좋아하는 시간은 언제인가요?">
+<summary><span class="qnum">Q72</span><span class="qtext">요즘 하루 중 가장 좋아하는 시간은 언제인가요?</span><span class="star-wrap"><input class="star" id="qstar72" type="checkbox"/><label aria-label="별표" for="qstar72"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-72" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q73. 최근 잘했다고 생각하는 일은 무엇인가요?">
+<summary><span class="qnum">Q73</span><span class="qtext">최근 잘했다고 생각하는 일은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar73" type="checkbox"/><label aria-label="별표" for="qstar73"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-73" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q74. 최근 아쉬웠던 선택은 무엇인가요?">
+<summary><span class="qnum">Q74</span><span class="qtext">최근 아쉬웠던 선택은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar74" type="checkbox"/><label aria-label="별표" for="qstar74"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-74" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q75. 요즘 나를 지치게 하는 것은 무엇인가요?">
+<summary><span class="qnum">Q75</span><span class="qtext">요즘 나를 지치게 하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar75" type="checkbox"/><label aria-label="별표" for="qstar75"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-75" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q76. 요즘 나를 회복시키는 것은 무엇인가요?">
+<summary><span class="qnum">Q76</span><span class="qtext">요즘 나를 회복시키는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar76" type="checkbox"/><label aria-label="별표" for="qstar76"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-76" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q77. 최근 새로 시작한 것이 있나요?">
+<summary><span class="qnum">Q77</span><span class="qtext">최근 새로 시작한 것이 있나요?</span><span class="star-wrap"><input class="star" id="qstar77" type="checkbox"/><label aria-label="별표" for="qstar77"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-77" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q78. 최근 그만두거나 쉬고 있는 것이 있나요?">
+<summary><span class="qnum">Q78</span><span class="qtext">최근 그만두거나 쉬고 있는 것이 있나요?</span><span class="star-wrap"><input class="star" id="qstar78" type="checkbox"/><label aria-label="별표" for="qstar78"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-78" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q79. 지금 가장 집중하고 싶은 일은 무엇인가요?">
+<summary><span class="qnum">Q79</span><span class="qtext">지금 가장 집중하고 싶은 일은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar79" type="checkbox"/><label aria-label="별표" for="qstar79"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-79" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q80. 오늘의 나에게 점수를 준다면 몇 점인가요? 그 이유는요?">
+<summary><span class="qnum">Q80</span><span class="qtext">오늘의 나에게 점수를 준다면 몇 점인가요? 그 이유는요?</span><span class="star-wrap"><input class="star" id="qstar80" type="checkbox"/><label aria-label="별표" for="qstar80"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-80" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q81. 내가 생각하는 행복은 어떤 모습인가요?">
+<summary><span class="qnum">Q81</span><span class="qtext">내가 생각하는 행복은 어떤 모습인가요?</span><span class="star-wrap"><input class="star" id="qstar81" type="checkbox"/><label aria-label="별표" for="qstar81"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-81" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q82. 성공했다고 느끼는 기준은 무엇인가요?">
+<summary><span class="qnum">Q82</span><span class="qtext">성공했다고 느끼는 기준은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar82" type="checkbox"/><label aria-label="별표" for="qstar82"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-82" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q83. 돈을 쓸 때 가장 아깝지 않은 것은 무엇인가요?">
+<summary><span class="qnum">Q83</span><span class="qtext">돈을 쓸 때 가장 아깝지 않은 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar83" type="checkbox"/><label aria-label="별표" for="qstar83"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-83" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q84. 시간을 쓸 때 가장 아깝다고 느끼는 것은 무엇인가요?">
+<summary><span class="qnum">Q84</span><span class="qtext">시간을 쓸 때 가장 아깝다고 느끼는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar84" type="checkbox"/><label aria-label="별표" for="qstar84"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-84" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q85. 내게 좋은 하루란 어떤 하루인가요?">
+<summary><span class="qnum">Q85</span><span class="qtext">내게 좋은 하루란 어떤 하루인가요?</span><span class="star-wrap"><input class="star" id="qstar85" type="checkbox"/><label aria-label="별표" for="qstar85"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-85" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q86. 내가 중요하게 생각하는 가치는 무엇인가요?">
+<summary><span class="qnum">Q86</span><span class="qtext">내가 중요하게 생각하는 가치는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar86" type="checkbox"/><label aria-label="별표" for="qstar86"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-86" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q87. 앞으로도 잃고 싶지 않은 것은 무엇인가요?">
+<summary><span class="qnum">Q87</span><span class="qtext">앞으로도 잃고 싶지 않은 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar87" type="checkbox"/><label aria-label="별표" for="qstar87"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-87" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q88. 요즘 내려놓고 싶은 것은 무엇인가요?">
+<summary><span class="qnum">Q88</span><span class="qtext">요즘 내려놓고 싶은 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar88" type="checkbox"/><label aria-label="별표" for="qstar88"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-88" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q89. 지금의 삶에서 더 많아졌으면 하는 것은 무엇인가요?">
+<summary><span class="qnum">Q89</span><span class="qtext">지금의 삶에서 더 많아졌으면 하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar89" type="checkbox"/><label aria-label="별표" for="qstar89"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-89" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q90. 지금의 삶에서 조금 줄었으면 하는 것은 무엇인가요?">
+<summary><span class="qnum">Q90</span><span class="qtext">지금의 삶에서 조금 줄었으면 하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar90" type="checkbox"/><label aria-label="별표" for="qstar90"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-90" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q91. 1년 뒤의 나에게 질문 하나를 남긴다면 무엇인가요?">
+<summary><span class="qnum">Q91</span><span class="qtext">1년 뒤의 나에게 질문 하나를 남긴다면 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar91" type="checkbox"/><label aria-label="별표" for="qstar91"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-91" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q92. 1년 뒤에도 기억하고 싶은 오늘의 감정은 무엇인가요?">
+<summary><span class="qnum">Q92</span><span class="qtext">1년 뒤에도 기억하고 싶은 오늘의 감정은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar92" type="checkbox"/><label aria-label="별표" for="qstar92"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-92" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q93. 다음 달의 나에게 기대하는 것은 무엇인가요?">
+<summary><span class="qnum">Q93</span><span class="qtext">다음 달의 나에게 기대하는 것은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar93" type="checkbox"/><label aria-label="별표" for="qstar93"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-93" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q94. 올해가 끝날 때 어떤 기억이 남아 있으면 좋겠나요?">
+<summary><span class="qnum">Q94</span><span class="qtext">올해가 끝날 때 어떤 기억이 남아 있으면 좋겠나요?</span><span class="star-wrap"><input class="star" id="qstar94" type="checkbox"/><label aria-label="별표" for="qstar94"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-94" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q95. 지금 시작하면 좋을 작은 일 하나는 무엇인가요?">
+<summary><span class="qnum">Q95</span><span class="qtext">지금 시작하면 좋을 작은 일 하나는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar95" type="checkbox"/><label aria-label="별표" for="qstar95"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-95" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q96. 미래의 내가 고마워할 선택은 무엇일까요?">
+<summary><span class="qnum">Q96</span><span class="qtext">미래의 내가 고마워할 선택은 무엇일까요?</span><span class="star-wrap"><input class="star" id="qstar96" type="checkbox"/><label aria-label="별표" for="qstar96"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-96" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q97. 다시 답해보고 싶은 질문은 무엇인가요?">
+<summary><span class="qnum">Q97</span><span class="qtext">다시 답해보고 싶은 질문은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar97" type="checkbox"/><label aria-label="별표" for="qstar97"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-97" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q98. 지금 가장 궁금한 내 미래는 무엇인가요?">
+<summary><span class="qnum">Q98</span><span class="qtext">지금 가장 궁금한 내 미래는 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar98" type="checkbox"/><label aria-label="별표" for="qstar98"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-98" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q99. 나중에 꼭 기록으로 남기고 싶은 순간은 무엇인가요?">
+<summary><span class="qnum">Q99</span><span class="qtext">나중에 꼭 기록으로 남기고 싶은 순간은 무엇인가요?</span><span class="star-wrap"><input class="star" id="qstar99" type="checkbox"/><label aria-label="별표" for="qstar99"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-99" placeholder="여기에 답을 적어보세요."></textarea>
+</details>
+<details class="qa-item" data-archive-type="셀프Q&amp;A" data-title="Q100. 오늘의 나를 한 문장으로 남긴다면 무엇이라고 쓰고 싶나요?">
+<summary><span class="qnum">Q100</span><span class="qtext">오늘의 나를 한 문장으로 남긴다면 무엇이라고 쓰고 싶나요?</span><span class="star-wrap"><input class="star" id="qstar100" type="checkbox"/><label aria-label="별표" for="qstar100"></label></span></summary>
+<textarea class="qa-answer" data-save="qa-answer-100" placeholder="여기에 답을 적어보세요."></textarea>
+</details></div></main></section>
+<section class="page p5"><header><div><h1>보관함</h1><div class="subtitle">기록을 다시 찾고, 별표한 기록을 모아보세요.</div></div></header><main class="paper"><input class="archive-search" id="archiveSearch" placeholder="기록 검색" type="search"/><div class="archive-controls"><span class="chip active" data-filter="전체">전체</span><span class="chip" data-filter="star">★ 별표</span><span class="chip" data-filter="한달기록">한달기록</span><span class="chip" data-filter="디깅기록">디깅기록</span><span class="chip" data-filter="버킷리스트">버킷리스트</span><span class="chip" data-filter="셀프Q&amp;A">셀프Q&amp;A</span></div><div class="archive-list" id="archiveList"><div class="archive-placeholder"><b>보관함</b><br/>iPad 미리보기에서는 자동 모으기가 제한될 수 있어요.<br/>Safari나 웹앱으로 열면 작성한 기록과 ★ 별표 기록이 여기에 모입니다.</div></div></main></section>
+</div></div>
+<div class="syncbar" id="syncbar">
+<span class="sync-pill"><span class="sync-dot off" id="syncDot"></span><span id="syncText">로그인 필요</span></span>
+<span class="sync-pill cloud-user" id="userBadge">오프라인</span>
+<span class="sync-spacer"></span>
+<button class="syncbtn" id="backupBtn" type="button">백업</button>
+<button class="syncbtn" id="restoreBtn" type="button">복원</button>
+<button class="syncbtn primary-sync" id="fullSyncBtn" type="button">↻ 전체 동기화</button>
+<button class="syncbtn" id="logoutBtn" style="display:none" type="button">로그아웃</button>
+<input accept="application/json" hidden="" id="restoreFile" type="file"/>
+</div><div class="footer"><div class="actions"><span class="status" id="status">로컬 저장 준비됨</span><button class="ghost" id="clearScreenBtn" type="button">현재 화면 비우기</button><button class="primary" id="saveBtn" type="button">저장·동기화</button></div><nav class="bottom-nav"><label class="nav-label n1" for="t1">한달기록</label><label class="nav-label n2" for="t2">디깅기록</label><label class="nav-label n3" for="t3">버킷리스트</label><label class="nav-label n4" for="t4">셀프Q&amp;A</label><label class="nav-label n5" for="t5">보관함</label></nav></div>
+
+<div class="auth-layer" id="authLayer">
+<div class="auth-card">
+<h2>나의 기록</h2>
+<p>같은 계정으로 로그인하면 모바일 · PC · iPad의 기록을 하나로 동기화합니다.<br/><b>전체 동기화</b>는 각 기기의 최신 항목을 합쳐서 보존합니다.</p>
+<input autocomplete="email" id="authEmail" placeholder="이메일" type="email"/>
+<input autocomplete="current-password" id="authPassword" placeholder="비밀번호 (6자 이상)" type="password"/>
+<div class="auth-actions">
+<button class="syncbtn primary-sync" id="loginBtn" type="button">로그인</button>
+<button class="syncbtn" id="signupBtn" type="button">회원가입</button>
+</div>
+<button class="syncbtn offline-open" id="offlineBtn" type="button">일단 오프라인으로 열기</button>
+<div class="auth-msg" id="authMsg"></div>
+</div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={"apiKey":"AIzaSyCOy8x5kPeJUUqRUjEHRqckT2ReULEoUac","authDomain":"maeum-jogak2.firebaseapp.com","projectId":"maeum-jogak2","storageBucket":"maeum-jogak2.firebasestorage.app","messagingSenderId":"942972843404","appId":"1:942972843404:web:8148d7610469425609d2a9","measurementId":"G-HCZ819E5VC"};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+enableIndexedDbPersistence(db).catch(()=>{});
+
+const STORE='my-record-pwa-v1';
+const DEVICE_KEY='my-record-pwa-device';
+const CLOUD_COLLECTION='record_archive_app';
+let currentUser=null;
+let unsubCloud=null;
+let cloudTimer=null;
+let applying=false;
+let viewMonth='2026-09';
+let archiveFilter='전체';
+let archiveSearch='';
+let offlineBypass=false;
+let syncInFlight=false;
+
+function now(){return Date.now()}
+function uid(){let x=localStorage.getItem(DEVICE_KEY);if(!x){x=(crypto.randomUUID?crypto.randomUUID():'d-'+Math.random().toString(36).slice(2)+Date.now());localStorage.setItem(DEVICE_KEY,x)}return x}
+const deviceId=uid();
+function emptyState(){return {schemaVersion:1,fields:{},meta:{createdAt:now(),deviceId}}}
+function loadLocal(){try{const x=JSON.parse(localStorage.getItem(STORE)||'null');return normalize(x)}catch(e){return emptyState()}}
+function normalize(x){if(!x||typeof x!=='object')return emptyState();if(!x.fields||typeof x.fields!=='object')x.fields={};x.schemaVersion=1;x.meta=x.meta||{};return x}
+let state=loadLocal();
+function saveLocal(){localStorage.setItem(STORE,JSON.stringify(state))}
+function rec(v,t=now()){return {v,t,deviceId}}
+function newer(a,b){if(!a)return b;if(!b)return a;if((a.t||0)!==(b.t||0))return (a.t||0)>(b.t||0)?a:b;return String(a.deviceId||'')>=String(b.deviceId||'')?a:b}
+function mergeStates(a,b){a=normalize(JSON.parse(JSON.stringify(a||emptyState())));b=normalize(b||emptyState());const out=emptyState();out.fields={};const keys=new Set([...Object.keys(a.fields),...Object.keys(b.fields)]);for(const k of keys)out.fields[k]=newer(a.fields[k],b.fields[k]);out.meta={...a.meta,...b.meta,lastMergedAt:now(),deviceId};return out}
+function sameState(a,b){const clean=x=>{const y=normalize(JSON.parse(JSON.stringify(x||{})));delete y.meta.lastMergedAt;delete y.meta.cloudUpdatedAt;return JSON.stringify(y.fields)};return clean(a)===clean(b)}
+function hasMeaningfulData(st){return Object.values((st&&st.fields)||{}).some(r=>{const v=r&&r.v;return v===true || (typeof v==='string'&&v.trim()!=='') || (typeof v==='number'&&v>0)})}
+function scopeFor(el){return el.closest('.p1,.p2')?`month:${viewMonth}`:'global'}
+function fieldKey(el){let key=el.dataset.save||el.id;if(!key)return null;return `${scopeFor(el)}:${key}`}
+function fieldValue(el){if(el.type==='checkbox')return !!el.checked;return el.value??''}
+function setFieldFromEl(el,stamp=now()){const k=fieldKey(el);if(!k)return;state.fields[k]=rec(fieldValue(el),stamp)}
+function getField(el){const k=fieldKey(el);return k?state.fields[k]:null}
+function persistControls(){document.querySelectorAll('[data-save], input.star, .bucket-check, .add-toggle, .bucket-add-toggle').forEach(el=>{if(!el.id&&!el.dataset.save)return;setFieldFromEl(el)});saveLocal()}
+function applyControls(){applying=true;document.querySelectorAll('[data-save], input.star, .bucket-check, .add-toggle, .bucket-add-toggle').forEach(el=>{const r=getField(el);if(r){if(el.type==='checkbox')el.checked=!!r.v;else el.value=r.v??''}else if(el.matches('.p2 input[type=date][data-save]')){const today=new Date();const y=String(today.getFullYear());const m=String(today.getMonth()+1).padStart(2,'0');el.value=(viewMonth===`${y}-${m}`?`${viewMonth}-${String(today.getDate()).padStart(2,'0')}`:`${viewMonth}-01`)}else if(el.type==='checkbox'){el.checked=false}else if(el.tagName==='SELECT'){el.selectedIndex=0}else{el.value=''}});applying=false;buildArchive()}
+function migrateLegacyOnce(){if(state.meta.legacyMigrated)return;let changed=false;try{document.querySelectorAll('[data-save]').forEach(el=>{const old=localStorage.getItem('recordapp:'+el.dataset.save);if(old!==null){const k=fieldKey(el);if(!state.fields[k]){state.fields[k]=rec(old,now()-1000);changed=true}}});document.querySelectorAll('input.star,.bucket-check').forEach(el=>{const old=localStorage.getItem('recordapp:'+el.id);if(old!==null){const k=fieldKey(el);if(!state.fields[k]){state.fields[k]=rec(old==='1',now()-1000);changed=true}}})}catch(e){}state.meta.legacyMigrated=true;if(changed)state.meta.legacyImportedAt=now();saveLocal()}
+
+function setStatus(text,kind='busy'){document.getElementById('syncText').textContent=text;const d=document.getElementById('syncDot');d.className='sync-dot '+kind;document.getElementById('status').textContent=text}
+function fmtTime(ts){if(!ts)return'';const d=new Date(ts);return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+function cloudRef(){return currentUser?doc(db,'users',currentUser.uid,CLOUD_COLLECTION,'state'):null}
+async function pushCloud(reason='자동 동기화'){
+  if(!currentUser||!navigator.onLine)return;
+  clearTimeout(cloudTimer);
+  const ref=cloudRef(); if(!ref)return;
+  setStatus(reason+' 중…','busy');
+  try{
+    await setDoc(ref,{schemaVersion:1,fields:state.fields,meta:{...state.meta,deviceId,lastPushAt:now()},cloudUpdatedAt:serverTimestamp()},{merge:false});
+    state.meta.lastSyncedAt=now();saveLocal();setStatus(`동기화 완료 ${fmtTime(state.meta.lastSyncedAt)}`,'ok');
+  }catch(e){console.error(e);setStatus('클라우드 동기화 대기','off')}
+}
+function schedulePush(){if(!currentUser||!navigator.onLine)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>pushCloud('자동 동기화'),900)}
+async function fullSync(showMessage=true){
+  if(syncInFlight)return; syncInFlight=true;
+  if(!currentUser){setStatus('로그인 후 전체 동기화 가능','off');syncInFlight=false;return}
+  if(!navigator.onLine){setStatus('오프라인 — 연결되면 동기화','off');syncInFlight=false;return}
+  setStatus('전체 동기화 중…','busy');
+  try{
+    const snap=await getDoc(cloudRef());
+    const remote=snap.exists()?normalize(snap.data()):emptyState();
+    const merged=mergeStates(state,remote);
+    state=merged;saveLocal();applyControls();
+    // Never replace meaningful cloud data with an empty client state: merge above guarantees preservation.
+    await setDoc(cloudRef(),{schemaVersion:1,fields:state.fields,meta:{...state.meta,deviceId,lastFullSyncAt:now()},cloudUpdatedAt:serverTimestamp()},{merge:false});
+    state.meta.lastSyncedAt=now();saveLocal();
+    setStatus(`전체 동기화 완료 ${fmtTime(state.meta.lastSyncedAt)}`,'ok');
+    if(showMessage)flash('모든 기기의 최신 기록을 합쳐 동기화했어요 ✓');
+  }catch(e){console.error(e);setStatus('전체 동기화 실패 — 다시 시도','off');if(showMessage)flash('동기화에 실패했어요. 인터넷 연결을 확인해주세요.')}
+  finally{syncInFlight=false}
+}
+function subscribeCloud(){
+  if(unsubCloud){unsubCloud();unsubCloud=null}
+  if(!currentUser)return;
+  unsubCloud=onSnapshot(cloudRef(),snap=>{
+    if(!snap.exists())return;
+    const remote=normalize(snap.data());
+    const merged=mergeStates(state,remote);
+    const needPush=!sameState(merged,remote);
+    const changed=!sameState(merged,state);
+    state=merged;saveLocal();if(changed)applyControls();
+    state.meta.lastSyncedAt=now();saveLocal();setStatus(`동기화됨 ${fmtTime(state.meta.lastSyncedAt)}`,'ok');
+    if(needPush)schedulePush();
+  },err=>{console.error(err);setStatus('실시간 동기화 연결 대기','off')});
+}
+function flash(msg){const s=document.getElementById('status');s.textContent=msg;setTimeout(()=>{s.textContent=currentUser?'자동 동기화 켜짐':'로컬 저장 중'},1800)}
+
+function updateMonthTitle(){const [y,m]=viewMonth.split('-');document.querySelectorAll('.month-title').forEach(x=>x.textContent=`${y}년 ${Number(m)}월`)}
+function moveMonth(delta){persistControls();const [y,m]=viewMonth.split('-').map(Number);const d=new Date(y,m-1+delta,1);viewMonth=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;localStorage.setItem(STORE+':viewMonth',viewMonth);updateMonthTitle();applyControls()}
+
+function esc(x){return String(x??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+function nodeRecord(node){const star=node.querySelector('input.star');const txt=node.querySelector('textarea');const titleInput=node.querySelector('input[type=text]');const title=(titleInput&&titleInput.value.trim())||node.dataset.title||'';const text=(txt&&txt.value.trim())||'';return {type:node.dataset.archiveType||'',title,text,star:!!(star&&star.checked),month:null}}
+function monthsInState(){const out=new Set([viewMonth]);for(const k of Object.keys(state.fields)){const m=k.match(/^month:(\d{4}-\d{2}):/);if(m)out.add(m[1])}return [...out].sort().reverse()}
+function monthNodeRecord(node,month){const type=node.dataset.archiveType||'';const txt=node.querySelector('[data-save]');const star=node.querySelector('input.star');let title=node.dataset.title||'';let text='';let starred=false;if(txt){const r=state.fields[`month:${month}:${txt.dataset.save}`];text=String(r?.v??'').trim()}if(star){const r=state.fields[`month:${month}:${star.id}`];starred=!!r?.v}return {type,title,text,star:starred,month}}
+function buildArchive(){const box=document.getElementById('archiveList');if(!box)return;let arr=[];
+  // 한달기록/디깅기록은 저장된 모든 월을 모아서 보여줍니다.
+  for(const month of monthsInState())document.querySelectorAll('.p1 [data-archive-type],.p2 [data-archive-type]').forEach(n=>{const x=monthNodeRecord(n,month);if(x.text||x.star)arr.push(x)});
+  // 버킷/Q&A는 전역 기록입니다.
+  document.querySelectorAll('.p3 [data-archive-type],.p4 [data-archive-type]').forEach(n=>{const x=nodeRecord(n);if(x.text||x.star||(n.querySelector('input[type=text]')?.value||'').trim())arr.push(x)});
+  arr=arr.filter(x=>archiveFilter==='전체'||(archiveFilter==='star'?x.star:x.type===archiveFilter));if(archiveSearch){const q=archiveSearch.toLowerCase();arr=arr.filter(x=>(x.title+' '+x.text+' '+x.type+' '+(x.month||'')).toLowerCase().includes(q))}if(!arr.length){box.innerHTML='<div class="archive-placeholder">조건에 맞는 기록이 없어요.</div>';return}box.innerHTML=arr.map(x=>`<article class="archive-card"><div class="archive-type">${x.star?'★ ':''}${esc(x.type)}${x.month?' · '+esc(x.month.replace('-', '.')):''}</div><div class="archive-title">${esc(x.title)}</div>${x.text?`<div class="archive-text">${esc(x.text)}</div>`:''}</article>`).join('')}
+
+function currentPage(){for(let i=1;i<=5;i++)if(document.getElementById('t'+i).checked)return document.querySelector('.p'+i);return null}
+function clearCurrent(){const page=currentPage();if(!page)return;if(!confirm('현재 화면의 기록을 비울까요? 이 변경도 다른 기기에 동기화됩니다.'))return;page.querySelectorAll('[data-save]').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';setFieldFromEl(el)});page.querySelectorAll('input.star,.bucket-check,.add-toggle,.bucket-add-toggle').forEach(el=>{el.checked=false;setFieldFromEl(el)});saveLocal();buildArchive();schedulePush();flash('현재 화면을 비웠어요')}
+
+function downloadBackup(){persistControls();const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),app:'나의 기록',state},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`나의기록_백업_${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);flash('JSON 백업을 저장했어요')}
+async function restoreBackup(file){try{const obj=JSON.parse(await file.text());const incoming=normalize(obj.state||obj);state=mergeStates(state,incoming);saveLocal();applyControls();await fullSync(false);flash('백업을 합쳐 복원했어요 ✓')}catch(e){console.error(e);flash('백업 파일을 읽지 못했어요')}}
+
+// Input handling: every field gets its own timestamp, so devices merge field-by-field instead of overwriting the whole app.
+document.addEventListener('input',e=>{const el=e.target;if(applying)return;if(el.matches('[data-save]')){setFieldFromEl(el);saveLocal();buildArchive();schedulePush()}});
+document.addEventListener('change',e=>{const el=e.target;if(applying)return;if(el.matches('[data-save],input.star,.bucket-check,.add-toggle,.bucket-add-toggle')){setFieldFromEl(el);saveLocal();buildArchive();schedulePush()}});
+document.querySelectorAll('.prev-month').forEach(b=>b.addEventListener('click',()=>moveMonth(-1)));
+document.querySelectorAll('.next-month').forEach(b=>b.addEventListener('click',()=>moveMonth(1)));
+document.getElementById('saveBtn').addEventListener('click',()=>{persistControls();currentUser?fullSync(false):flash('기기에 저장했어요')});
+document.getElementById('fullSyncBtn').addEventListener('click',()=>fullSync(true));
+document.getElementById('clearScreenBtn').addEventListener('click',clearCurrent);
+document.getElementById('backupBtn').addEventListener('click',e=>{if(e.shiftKey){document.getElementById('restoreFile').click()}else downloadBackup()});
+document.getElementById('restoreBtn').addEventListener('click',()=>document.getElementById('restoreFile').click());
+document.getElementById('restoreFile').addEventListener('change',e=>{if(e.target.files[0])restoreBackup(e.target.files[0]);e.target.value=''});
+document.querySelectorAll('.archive-controls .chip').forEach(ch=>ch.addEventListener('click',()=>{archiveFilter=ch.dataset.filter||'전체';document.querySelectorAll('.archive-controls .chip').forEach(x=>x.classList.toggle('active',x===ch));buildArchive()}));
+document.getElementById('archiveSearch').addEventListener('input',e=>{archiveSearch=e.target.value.trim();buildArchive()});
+
+// Auth
+const layer=document.getElementById('authLayer'), msg=document.getElementById('authMsg');
+function authError(e){const code=e&&e.code||'';if(code.includes('invalid-credential'))return '이메일 또는 비밀번호를 확인해주세요.';if(code.includes('email-already-in-use'))return '이미 가입된 이메일이에요.';if(code.includes('weak-password'))return '비밀번호는 6자 이상으로 입력해주세요.';if(code.includes('invalid-email'))return '이메일 형식을 확인해주세요.';return '로그인 중 문제가 생겼어요. 잠시 후 다시 시도해주세요.'}
+document.getElementById('loginBtn').addEventListener('click',async()=>{msg.textContent='';try{await signInWithEmailAndPassword(auth,document.getElementById('authEmail').value.trim(),document.getElementById('authPassword').value)}catch(e){msg.textContent=authError(e)}});
+document.getElementById('signupBtn').addEventListener('click',async()=>{msg.textContent='';try{await createUserWithEmailAndPassword(auth,document.getElementById('authEmail').value.trim(),document.getElementById('authPassword').value)}catch(e){msg.textContent=authError(e)}});
+document.getElementById('offlineBtn').addEventListener('click',()=>{offlineBypass=true;layer.classList.remove('show');setStatus('오프라인 저장 중','off')});
+document.getElementById('logoutBtn').addEventListener('click',()=>signOut(auth));
+onAuthStateChanged(auth,async user=>{currentUser=user||null;document.getElementById('logoutBtn').style.display=user?'inline-flex':'none';document.getElementById('userBadge').textContent=user?user.email:'오프라인';if(user){layer.classList.remove('show');setStatus('로그인됨 · 동기화 준비','busy');subscribeCloud();await fullSync(false)}else{if(unsubCloud){unsubCloud();unsubCloud=null}if(!offlineBypass&&navigator.onLine)layer.classList.add('show');setStatus(navigator.onLine?'로그인 필요':'오프라인 저장 중','off')}});
+window.addEventListener('online',()=>{setStatus(currentUser?'연결됨 · 동기화 확인 중':'온라인 · 로그인 필요','busy');if(currentUser)fullSync(false);else if(!offlineBypass)layer.classList.add('show')});
+window.addEventListener('offline',()=>setStatus('오프라인 — 기기에 안전하게 저장 중','off'));
+
+// PWA
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.error));
+
+// Boot
+viewMonth=localStorage.getItem(STORE+':viewMonth')||'2026-09';
+migrateLegacyOnce();updateMonthTitle();applyControls();
+if(!navigator.onLine){offlineBypass=true;layer.classList.remove('show');setStatus('오프라인 — 기기에 안전하게 저장 중','off')}
+</script></body></html>
