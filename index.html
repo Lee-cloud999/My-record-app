@@ -558,11 +558,18 @@ let syncStatusSettled=false;
 function setStatus(text,kind='busy',force=false){
   const t=document.getElementById('syncText'),d=document.getElementById('syncDot');
   if(!t||!d)return;
-  // 자동/실시간 동기화가 한 번 완료된 뒤에는 같은 상태 문구를 다시 흔들지 않습니다.
-  if(syncStatusSettled&&!force&&(kind==='busy'||kind==='ok'))return;
-  if(kind==='ok'){text='동기화 완료';syncStatusSettled=true}
-  if(kind==='off')syncStatusSettled=false;
-  t.textContent=text;d.className='sync-dot '+kind;
+  // 정상 동기화가 한 번 끝난 뒤에는 자동/실시간 동기화가 문구를 바꾸지 않습니다.
+  // force=true는 사용자가 직접 누른 전체 동기화처럼 명시적인 동작에만 사용합니다.
+  if(syncStatusSettled && !force && (kind==='busy' || kind==='ok')) return;
+  if(kind==='ok'){
+    text='동기화 완료';
+    syncStatusSettled=true;
+  }else if(kind==='off'){
+    // 실제 오프라인/오류 상태에서는 완료 고정을 해제해 상태를 알려줍니다.
+    syncStatusSettled=false;
+  }
+  t.textContent=text;
+  d.className='sync-dot '+kind;
 }
 function fmtTime(ts){if(!ts)return'';const d=new Date(ts);return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
 function cloudRef(){return currentUser?doc(db,'users',currentUser.uid,CLOUD_COLLECTION,'state'):null}
@@ -570,7 +577,8 @@ async function pushCloud(reason='자동 동기화'){
   if(!currentUser||!navigator.onLine)return;
   clearTimeout(cloudTimer);
   const ref=cloudRef(); if(!ref)return;
-  setStatus(reason+' 중…','busy');
+  // 자동 동기화는 백그라운드에서 조용히 진행합니다.
+  // 이미 '동기화 완료'인 화면 문구를 다시 흔들지 않습니다.
   try{
     await setDoc(ref,{schemaVersion:1,fields:state.fields,meta:{...state.meta,deviceId,lastPushAt:now()},cloudUpdatedAt:serverTimestamp()},{merge:false});
     state.meta.lastSyncedAt=now();saveLocal();setStatus('동기화 완료','ok');
@@ -581,7 +589,8 @@ async function fullSync(showMessage=true){
   if(syncInFlight)return; syncInFlight=true;
   if(!currentUser){setStatus('로그인 후 전체 동기화 가능','off');syncInFlight=false;return}
   if(!navigator.onLine){setStatus('오프라인 — 연결되면 동기화','off');syncInFlight=false;return}
-  setStatus('전체 동기화 중…','busy',showMessage);
+  // 사용자가 직접 '전체 동기화'를 눌렀을 때만 진행 문구를 보여줍니다.
+  if(showMessage) setStatus('전체 동기화 중…','busy',true);
   try{
     const snap=await getDoc(cloudRef());
     const remote=snap.exists()?normalize(snap.data()):emptyState();
@@ -650,16 +659,59 @@ function monthNodeRecord(node,month){
   }
   return {type,title,text,star:starred,month,isDigEntry:type==='디깅기록'&&node.classList.contains('entry')};
 }
-function buildArchive(){const box=document.getElementById('archiveList');if(!box)return;let arr=[];
+function buildArchive(){
+  const box=document.getElementById('archiveList');
+  if(!box)return;
+  let arr=[];
+
   // 한달기록/디깅기록은 저장된 모든 월을 모아서 보여줍니다.
-  for(const month of monthsInState())document.querySelectorAll('.p1 [data-archive-type],.p2 [data-archive-type]').forEach(n=>{
-    const x=monthNodeRecord(n,month);
-    // 빈 디깅 기록 카드는 날짜나 별표만 있어도 보관함에 넣지 않습니다.
-    if(x.isDigEntry){if(x.text)arr.push(x)}else if(x.text||x.star){arr.push(x)}
+  for(const month of monthsInState()){
+    document.querySelectorAll('.p1 [data-archive-type],.p2 [data-archive-type]').forEach(n=>{
+      const x=monthNodeRecord(n,month);
+
+      if(x.isDigEntry){
+        const realText=String(x.text||'').trim();
+        const legacySlotTitle=/^디깅\s*기록\s*\d+$/i.test(String(x.title||'').trim());
+        const dateOnly=/^\d{4}-\d{2}-\d{2}$/.test(realText);
+
+        // 실제 디깅 본문이 없는 카드와 예전 버전에서 생긴
+        // '디깅 기록 1/2 + 날짜만' 가짜 카드는 보관함에서 제외합니다.
+        if(!realText) return;
+        if(legacySlotTitle && dateOnly) return;
+
+        arr.push(x);
+      }else if(x.text||x.star){
+        arr.push(x);
+      }
+    });
+  }
+
+  // 혹시 예전 코드가 만든 형태가 남아 있어도 최종 단계에서 한 번 더 걸러냅니다.
+  arr=arr.filter(x=>{
+    if(x.type!=='디깅기록') return true;
+    const title=String(x.title||'').trim();
+    const text=String(x.text||'').trim();
+    if(/^디깅\s*기록\s*\d+$/i.test(title) && (!text || /^\d{4}-\d{2}-\d{2}$/.test(text))) return false;
+    return true;
   });
-  // 버킷/Q&A는 전역 기록입니다.
-  document.querySelectorAll('.p3 [data-archive-type]').forEach(n=>{const x=nodeRecord(n);if(x.text||x.star||(n.querySelector('input[type=text]')?.value||'').trim())arr.push(x)});
-  arr=arr.filter(x=>archiveFilter==='전체'||(archiveFilter==='star'?x.star:x.type===archiveFilter));if(archiveSearch){const q=archiveSearch.toLowerCase();arr=arr.filter(x=>(x.title+' '+x.text+' '+x.type+' '+(x.month||'')).toLowerCase().includes(q))}if(!arr.length){box.innerHTML='<div class="archive-placeholder">조건에 맞는 기록이 없어요.</div>';return}box.innerHTML=arr.map(x=>`<article class="archive-card"><div class="archive-type">${x.star?'★ ':''}${esc(x.type)}${x.month?' · '+esc(x.month.replace('-', '.')):''}</div><div class="archive-title">${esc(x.title)}</div>${x.text?`<div class="archive-text">${esc(x.text)}</div>`:''}</article>`).join('')}
+
+  // 버킷은 전역 기록입니다. 셀프Q&A는 전용 Q&A 보관함에서만 보여줍니다.
+  document.querySelectorAll('.p3 [data-archive-type]').forEach(n=>{
+    const x=nodeRecord(n);
+    if(x.text||x.star||(n.querySelector('input[type=text]')?.value||'').trim())arr.push(x);
+  });
+
+  arr=arr.filter(x=>archiveFilter==='전체'||(archiveFilter==='star'?x.star:x.type===archiveFilter));
+  if(archiveSearch){
+    const q=archiveSearch.toLowerCase();
+    arr=arr.filter(x=>(x.title+' '+x.text+' '+x.type+' '+(x.month||'')).toLowerCase().includes(q));
+  }
+  if(!arr.length){
+    box.innerHTML='<div class="archive-placeholder">조건에 맞는 기록이 없어요.</div>';
+    return;
+  }
+  box.innerHTML=arr.map(x=>`<article class="archive-card"><div class="archive-type">${x.star?'★ ':''}${esc(x.type)}${x.month?' · '+esc(x.month.replace('-', '.')):''}</div><div class="archive-title">${esc(x.title)}</div>${x.text?`<div class="archive-text">${esc(x.text)}</div>`:''}</article>`).join('');
+}
 
 function currentPage(){for(let i=1;i<=5;i++)if(document.getElementById('t'+i).checked)return document.querySelector('.p'+i);return null}
 function clearCurrent(){const page=currentPage();if(!page)return;if(!confirm('현재 화면의 기록을 비울까요? 이 변경도 다른 기기에 동기화됩니다.'))return;page.querySelectorAll('[data-save]').forEach(el=>{if(el.tagName==='SELECT')el.selectedIndex=0;else el.value='';setFieldFromEl(el)});page.querySelectorAll('input.star,.bucket-check,.add-toggle,.bucket-add-toggle').forEach(el=>{el.checked=false;setFieldFromEl(el)});saveLocal();buildArchive();schedulePush();flash('현재 화면을 비웠어요')}
