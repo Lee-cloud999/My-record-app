@@ -1,0 +1,17 @@
+My-record-app 저장소의 루트(현재 index.html이 있는 곳)에 아래 파일들을 업로드하세요.
+
+덮어쓰기:
+- index.html
+- manifest.webmanifest
+- icon-192.png
+- icon-512.png
+- apple-touch-icon.png
+
+새 파일이거나 기존 파일 덮어쓰기:
+- icon-maskable-512.png
+- favicon-32.png
+- favicon-16.png
+
+중요:
+- 기존 sw.js는 삭제하지 마세요.
+- GitHub Pages 반영 후 홈 화면의 기존 PWA 아이콘이 그대로면 앱을 홈 화면에서 삭제한 뒤 Safari에서 다시 '홈 화면에 추가'하세요.
