@@ -1,0 +1,1 @@
+이 파일들을 My-record-app 저장소 루트에 업로드해서 같은 이름 파일을 덮어쓰세요.\n교체 파일: icon-192.png, icon-512.png, icon-maskable-512.png, apple-touch-icon.png, favicon-32.png, favicon-16.png\nmanifest.webmanifest의 파일명은 그대로 사용하면 됩니다.\n갤럭시에서 기존 아이콘이 남아 있으면 앱 삭제 후 다시 설치하거나 앱 캐시를 비워주세요.\n
